@@ -1,0 +1,19 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.jsyoon.sleepmask2.TabFragment2">
+
+    <CalendarView
+        android:layout_width="match_parent"
+        android:id="@+id/calendarView2"
+        android:fadeScrollbars="true"
+        android:scrollbarStyle="insideOverlay"
+        android:scrollbars="horizontal|vertical"
+        android:layout_height="300dp"
+        android:nestedScrollingEnabled="true"
+        android:scrollbarTrackVertical="@android:color/background_light"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+</FrameLayout>

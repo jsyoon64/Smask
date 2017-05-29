@@ -1,0 +1,38 @@
+<resources>
+    <string name="app_name">수면안대</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="sub_section_format">Fargment1 child fragment page : %1$d</string>
+
+    <!-- TAB name String Define -->
+    <string name="tab1_title">수면상태</string>
+    <string name="tab2_title">수면이력 분석</string>
+    <string name="tab3_title">설정</string>
+    <string name="tab4_title">Debug</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- MODE String Define -->
+    <string name="mode_idle">대기모드</string>
+    <string name="mode_standby">준비모드</string>
+    <string name="mode_start">시작모드</string>
+    <string name="mode_demo">데모모드</string>
+
+    <string name="mode_prompt">Choose a mode</string>
+
+    <!-- preference를 위한 define -->
+    <string name="color_red">Red</string>
+    <string name="color_blue">Blue</string>
+    <string name="color_green">Green</string>
+
+    <color name="myRed">#F44336</color>
+    <color name="myBlue">#3F51B5</color>
+    <color name="myGreen">#4CAF50</color>
+
+    <!-- edit preference strings -->
+    <string name="text_size_key" translatable="false">size</string>
+    <string name="text_size_default" translatable="false">25</string>
+    <string name="text_size_label">Sample Text Size</string>
+
+</resources>
