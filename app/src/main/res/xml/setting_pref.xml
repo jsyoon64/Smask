@@ -1,31 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <CheckBoxPreference
-        android:defaultValue="true"
-        android:key="setting1"
-        android:title="setting1" />
-    <CheckBoxPreference
-        android:defaultValue="true"
-        android:key="setting2"
-        android:title="setting2" />
-    <CheckBoxPreference
-        android:defaultValue="true"
-        android:key="setting3"
-        android:title="setting3" />
+    <PreferenceCategory android:title="Checkbox category">
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="setting1"
+            android:title="Alarm" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="setting2"
+            android:title="수면상태" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="setting3"
+            android:title="블루투스상태" />
+    </PreferenceCategory>
 
-    <ListPreference
-        android:defaultValue="red"
-        android:entries="@array/color_option_labels"
-        android:entryValues="@array/color_option_labels"
-        android:key="color1"
-        android:title="Shape Color"/>
+    <PreferenceCategory android:title="Checkbox category">
+        <ListPreference
+            android:defaultValue="red"
+            android:entries="@array/color_option_labels"
+            android:entryValues="@array/color_option_labels"
+            android:key="color1"
+            android:title="Shape Color" />
+    </PreferenceCategory>
 
-    <EditTextPreference
-        android:defaultValue="@string/text_size_default"
-        android:key="@string/text_size_key"
-        android:title="@string/text_size_label" />
-
-    <Preference android:title="앱 기본정보"
-        android:key="VersionInfo"
-        android:summary="This is Version Info button"/>
+    <PreferenceCategory android:title="앱 기본정보">
+        <Preference
+            android:key="VersionInfo"
+            android:summary="This is Version Info button"
+            android:title="앱 정보" />
+    </PreferenceCategory>
 </PreferenceScreen>
