@@ -24,4 +24,8 @@
         android:defaultValue="@string/text_size_default"
         android:key="@string/text_size_key"
         android:title="@string/text_size_label" />
+
+    <Preference android:title="앱 기본정보"
+        android:key="VersionInfo"
+        android:summary="This is Version Info button"/>
 </PreferenceScreen>
