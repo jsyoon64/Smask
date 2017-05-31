@@ -1,10 +1,13 @@
 package com.jsyoon.sleepmask2;
 
+import android.content.SharedPreferences;
+import android.support.annotation.BoolRes;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.Toolbar;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
@@ -17,12 +20,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity  {
+    // Debug Tag
+    private static final String TAG = "MainActivity";
 
     private ViewPagerAdapter adapter;
     private TabLayout tabLayout;
     private ViewPager viewPager;
 
-    private static final String TAG = "MainActivity";
+    // Setting values
+    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +50,14 @@ public class MainActivity extends AppCompatActivity  {
         tabLayout.setupWithViewPager(viewPager);
 
         setupTabIcons();
+
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        Boolean setting1 = sharedPreferences.getBoolean("setting1",true);
+        Boolean setting2 = sharedPreferences.getBoolean("setting2",true);
+        Boolean setting3 = sharedPreferences.getBoolean("setting3",true);
+
+        String colorkey = sharedPreferences.getString("color1", getString(R.string.color_red));
     }
 
     private void setupTabIcons() {
