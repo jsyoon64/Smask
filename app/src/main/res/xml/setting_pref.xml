@@ -13,6 +13,22 @@
             android:defaultValue="true"
             android:key="setting3"
             android:title="블루투스상태" />
+
+        <Preference
+            android:key="btnDateFilter"
+            android:summary="Reschedule using date setting"
+            android:title="Reschedule" />
+
+        <Preference
+            android:key="btnTimeFilter"
+            android:summary="Reschedule using time setting"
+            android:title="Alarm Time" />
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="AlarmOnOff"
+            android:title="Alarm On Off" />
+
     </PreferenceCategory>
 
     <PreferenceCategory android:title="Checkbox category">
