@@ -3,34 +3,28 @@
     <PreferenceCategory android:title="Checkbox category">
         <CheckBoxPreference
             android:defaultValue="true"
-            android:key="setting1"
-            android:title="Alarm" />
-        <CheckBoxPreference
-            android:defaultValue="true"
             android:key="setting2"
             android:title="수면상태" />
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="setting3"
             android:title="블루투스상태" />
+    </PreferenceCategory>
 
-        <Preference
-            android:key="btnDateFilter"
-            android:summary="Reschedule using date setting"
-            android:title="Reschedule" />
-
-        <Preference
-            android:key="btnTimeFilter"
-            android:summary="Reschedule using time setting"
+    <PreferenceCategory android:title="Alarm category">
+        <com.jsyoon.sleepmask2.setting.TimePreference
+            android:defaultValue="90"
+            android:key="timekey"
+            android:summary="Time Summary"
             android:title="Alarm Time" />
 
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="AlarmOnOff"
-            android:title="Alarm On Off" />
-
+            android:title="Enable Alarm" />
     </PreferenceCategory>
 
+<!--
     <PreferenceCategory android:title="Checkbox category">
         <ListPreference
             android:defaultValue="red"
@@ -39,6 +33,7 @@
             android:key="color1"
             android:title="Shape Color" />
     </PreferenceCategory>
+-->
 
     <PreferenceCategory android:title="앱 기본정보">
         <Preference

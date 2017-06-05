@@ -1,10 +1,7 @@
 package com.jsyoon.sleepmask2.setting;
 
-import android.annotation.TargetApi;
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.preference.EditTextPreference;
 import android.support.v7.preference.ListPreference;
@@ -14,42 +11,42 @@ import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.PreferenceGroup;
 import android.support.v7.preference.PreferenceScreen;
 import android.util.Log;
-import android.widget.DatePicker;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.jsyoon.sleepmask2.R;
+import com.jsyoon.sleepmask2.target;
 
-import java.util.Calendar;
 import java.lang.Object;
 
 public class FragPref extends PreferenceFragmentCompat implements
-        SharedPreferences.OnSharedPreferenceChangeListener,
-        Preference.OnPreferenceChangeListener,
-        DatePickerDialog.OnDateSetListener,
-        TimePickerDialog.OnTimeSetListener {
+        SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final String TAG = "FragPref";
+
+    SharedPreferences sharedPreferences;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         getPreferenceScreen().getSharedPreferences()
                 .registerOnSharedPreferenceChangeListener(this);
+
         Log.d(TAG, "onCreate");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+
         getPreferenceScreen().getSharedPreferences()
                 .unregisterOnSharedPreferenceChangeListener(this);
+
         Log.d(TAG, "onDestroy");
     }
 
     @Override
     public void onCreatePreferences(Bundle bundle, String s) {
-
         // Add visualizer preferences, defined in the XML file in res->xml->pref_visualizer
         addPreferencesFromResource(R.xml.setting_pref);
 
@@ -63,28 +60,9 @@ public class FragPref extends PreferenceFragmentCompat implements
             }
         });
 
-        Preference btnDateFilter = (Preference) findPreference("btnDateFilter");
-        btnDateFilter.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                showDateDialog();
-                return false;
-            }
-        });
-
-        Preference btnTimeFilter = (Preference) findPreference("btnTimeFilter");
-        btnTimeFilter.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                showTimeDialog();
-                return false;
-            }
-        });
-
-        SharedPreferences sharedPreferences = getPreferenceScreen().getSharedPreferences();
+        sharedPreferences = getPreferenceScreen().getSharedPreferences();
         PreferenceScreen prefScreen = getPreferenceScreen();
+
         int count = prefScreen.getPreferenceCount();
 
         // Go through all of the preferences, and set up their preference summary.
@@ -100,12 +78,6 @@ public class FragPref extends PreferenceFragmentCompat implements
                 findListPreferenceNSetSummary(sharedPreferences, p);
             }
         }
-
-        // Add the OnPreferenceChangeListener specifically to the EditTextPreference
-        Preference preference = findPreference(getString(R.string.text_size_key));
-        if (null != preference)
-            preference.setOnPreferenceChangeListener(this);
-
         Log.d(TAG, "onCreatePreferences");
     }
 
@@ -115,41 +87,16 @@ public class FragPref extends PreferenceFragmentCompat implements
         findListPreferenceNSetSummary(sharedPreferences, preference);
     }
 
-    // is triggered before a value is saved to the SharedPreferences file.
-    // it can prevent an invalid update to a preference.
-    @Override
-    public boolean onPreferenceChange(Preference preference, Object newValue) {
-        Toast error = Toast.makeText(getContext(), "Please select a number between 1 and 45", Toast.LENGTH_SHORT);
-        // if EditTextPreference key
-        if (preference.getKey().equals(getString(R.string.text_size_key))) {
-            String stringSize = (String) newValue;
-            try {
-                float size = Float.parseFloat(stringSize);
-                // If the number is outside of the acceptable range, show an error.
-                if (size > 45 || size <= 0) {
-                    error.show();
-                    return false;
-                }
-            } catch (NumberFormatException nfe) {
-                // If whatever the user entered can't be parsed to a number, show an error
-                error.show();
-                return false;
-            }
-        }
-        return true;
-    }
-
     private void findListPreferenceNSetSummary(SharedPreferences sharedPreferences, Preference preference) {
         if (null != preference) {
             // Updates the summary for the preference
             if ((preference instanceof ListPreference) ||
-                    (preference instanceof EditTextPreference) ) {
+                    (preference instanceof EditTextPreference)) {
                 String value = sharedPreferences.getString(preference.getKey(), "");
                 setPreferenceSummary(preference, value);
-            }
-            else if ( preference.getKey().equals("btnDateFilter") || preference.getKey().equals("btnTimeFilter"))                  {
-                //long ii = sharedPreferences.getLong(preference.getKey(), 0);
-                //Log.d(TAG, "Preferences : " + ii);
+            } else if (preference instanceof TimePreference) {
+                int value = sharedPreferences.getInt(preference.getKey(), 0);
+                setIntPreferenceSummary(preference, value);
             }
         }
     }
@@ -169,30 +116,39 @@ public class FragPref extends PreferenceFragmentCompat implements
         }
     }
 
-    private void showDateDialog() {
-        // Use the current date as the default date in the picker
-        final Calendar c = Calendar.getInstance();
-        int year = c.get(Calendar.YEAR);
-        int month = c.get(Calendar.MONTH);
-        int day = c.get(Calendar.DAY_OF_MONTH);
-        new DatePickerDialog(getContext(), this, year, month, day).show();
-    }
+    private void setIntPreferenceSummary(Preference preference, int value) {
+        if ((preference instanceof TimePreference) && (value != 0)) {
+            // For list preferences, figure out the label of the selected value
+            TimePreference timePreference = (TimePreference) preference;
+            int hour = value / 60;
+            int min = value % 60;
 
-    private void showTimeDialog() {
-        final Calendar c = Calendar.getInstance();
-        int hourOfDay = c.get(Calendar.HOUR);
-        int minute = c.get(Calendar.MINUTE);
-        new TimePickerDialog(getContext(), this, hourOfDay, minute, true).show();
-    }
-
-
-    @Override
-    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        Log.i(TAG, "Selected Date: year " + year + " month " + month + " day " + dayOfMonth);
+            //String summary = Integer.toString(hour) + " : " +  Integer.toString(min);
+            String summary = String.format("%02d : %02d", hour, min);
+            timePreference.setSummary(summary);
+        }
     }
 
     @Override
-    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        Log.i(TAG, "Selected Time: Hour " + hourOfDay + " minute " + minute);
+    public void onDisplayPreferenceDialog(Preference preference) {
+
+        // Try if the preference is one of our custom Preferences
+        android.support.v4.app.DialogFragment dialogFragment = null;
+        if (preference instanceof TimePreference) {
+            // Create a new instance of TimePreferenceDialogFragment with the key of the related
+            // Preference
+            dialogFragment = TimePreferenceDialogFragmentCompat.newInstance(preference.getKey());
+        }
+
+        if (dialogFragment != null) {
+            // The dialog was created (it was one of our custom Preferences), show the dialog for it
+            dialogFragment.setTargetFragment(this, 0);
+            dialogFragment.show(this.getFragmentManager(), "android.support.v7.preference" +
+                    ".PreferenceFragment.DIALOG");
+        } else {
+            // Dialog creation could not be handled here. Try with the super method.
+            super.onDisplayPreferenceDialog(preference);
+        }
+
     }
 }

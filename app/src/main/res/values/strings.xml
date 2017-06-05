@@ -35,6 +35,9 @@
     <string name="text_size_default" translatable="false">25</string>
     <string name="text_size_label">Sample Text Size</string>
 
+    <string name="text_alarm_on" translatable="false">Alarm Enabled</string>
+    <string name="text_alarm_off" translatable="false">Alarm Disabled</string>
 
-    <string name="btn_custom">Button in custom layout</string>
+    <string name="SleepMask_Pref_Name" translatable="false">SleepMaskPrefFile</string>
+
 </resources>

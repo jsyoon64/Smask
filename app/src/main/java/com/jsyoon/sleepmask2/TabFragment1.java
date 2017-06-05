@@ -2,9 +2,11 @@ package com.jsyoon.sleepmask2;
 
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,9 +23,12 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 
 public class TabFragment1 extends Fragment {
     private static final String TAG = "TabFragment1";
-    Button btn_run;
+    boolean isAlarmEnabled = false;
+    Button btn_run, alabtn;
     private Spinner mode_spinner;
-    LineGraphSeries<DataPoint> series1,series2;
+    SharedPreferences sharedPreferences;
+
+    LineGraphSeries<DataPoint> series1, series2;
 
     public TabFragment1() {
         // Required empty public constructor
@@ -32,6 +37,7 @@ public class TabFragment1 extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
         }
         Log.d(TAG, "onCreate");
@@ -41,10 +47,29 @@ public class TabFragment1 extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.tab_fragment1, container, false);
+        View view = inflater.inflate(R.layout.tab_fragment1, container, false);
 
         mode_spinner = (Spinner) view.findViewById(R.id.modespinner);
         //mode_spinner.setSelection(0);
+
+        alabtn = (Button) view.findViewById(R.id.btn_alaena);
+
+        alabtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isAlarmEnabled = sharedPreferences.getBoolean("AlarmOnOff", true);
+                if (isAlarmEnabled) {
+                    alabtn.setText(R.string.text_alarm_off);
+                    isAlarmEnabled = false;
+                } else {
+                    alabtn.setText(R.string.text_alarm_on);
+                    isAlarmEnabled = true;
+                }
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putBoolean("AlarmOnOff", isAlarmEnabled);
+                editor.commit();
+            }
+        });
 
         btn_run = (Button) view.findViewById(R.id.btn_run);
         btn_run.setOnClickListener(new View.OnClickListener() {
@@ -72,6 +97,24 @@ public class TabFragment1 extends Fragment {
 
         testeegGraph(view);
 
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+
+        //저장 방식
+        //int minutesAfterMidnight = (hours * 60) + minutes;
+        int atime = sharedPreferences.getInt("timekey", 0);
+        int hour = atime / 60;
+        int min = atime % 60;
+        String alatext = String.format("%02d : %02d", hour, min);
+
+        Button alarmstatus = (Button) view.findViewById(R.id.btn_alarmstatus);
+        alarmstatus.setText(alatext);
+
+        isAlarmEnabled = sharedPreferences.getBoolean("AlarmOnOff", true);
+        if (isAlarmEnabled) {
+            alabtn.setText(R.string.text_alarm_on);
+        } else {
+            alabtn.setText(R.string.text_alarm_off);
+        }
         Log.d(TAG, "onCreateView");
         return view;
     }
@@ -88,8 +131,8 @@ public class TabFragment1 extends Fragment {
             x = x + 0.1;
             y = Math.sin(x);
             w = Math.cos(x);
-            series1.appendData(new DataPoint(x,y),false,300);
-            series2.appendData(new DataPoint(x,w),true,300);
+            series1.appendData(new DataPoint(x, y), false, 300);
+            series2.appendData(new DataPoint(x, w), true, 300);
         }
         series1.setTitle("Sine Curve 1");
         series1.setColor(Color.GREEN);

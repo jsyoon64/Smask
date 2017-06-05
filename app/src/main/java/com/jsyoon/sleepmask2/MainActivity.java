@@ -1,5 +1,7 @@
 package com.jsyoon.sleepmask2;
 
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.BoolRes;
 import android.support.design.widget.TabLayout;
@@ -51,13 +53,19 @@ public class MainActivity extends AppCompatActivity  {
 
         setupTabIcons();
 
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+            sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-        Boolean setting1 = sharedPreferences.getBoolean("setting1",true);
+        Boolean isAlarmEnabled = sharedPreferences.getBoolean("AlarmOnOff",true);
         Boolean setting2 = sharedPreferences.getBoolean("setting2",true);
         Boolean setting3 = sharedPreferences.getBoolean("setting3",true);
 
+        /*
         String colorkey = sharedPreferences.getString("color1", getString(R.string.color_red));
+        */
+
+        //저장 방식
+        //int minutesAfterMidnight = (hours * 60) + minutes;
+        int atime = sharedPreferences.getInt("timekey", 0);
     }
 
     private void setupTabIcons() {
