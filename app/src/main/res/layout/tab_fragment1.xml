@@ -52,6 +52,7 @@
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:text="Wake me"
             android:layout_weight="1" />
 
         <ToggleButton
@@ -80,6 +81,7 @@
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:text="LED 동작"
             android:layout_weight="1" />
 
         <Button
