@@ -1,6 +1,7 @@
 package com.jsyoon.sleepmask2;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.BoolRes;
@@ -8,6 +9,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.Toolbar;
@@ -53,7 +55,7 @@ public class MainActivity extends AppCompatActivity  {
 
         setupTabIcons();
 
-            sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         Boolean isAlarmEnabled = sharedPreferences.getBoolean("AlarmOnOff",true);
         Boolean setting2 = sharedPreferences.getBoolean("setting2",true);
@@ -66,6 +68,20 @@ public class MainActivity extends AppCompatActivity  {
         //저장 방식
         //int minutesAfterMidnight = (hours * 60) + minutes;
         int atime = sharedPreferences.getInt("timekey", 0);
+    }
+
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setTitle("Really Exit?")
+                .setMessage("Are you sure you want to exit?")
+                .setNegativeButton(android.R.string.no, null)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        MainActivity.super.onBackPressed();
+                    }
+                }).create().show();
     }
 
     private void setupTabIcons() {
